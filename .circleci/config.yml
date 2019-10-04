@@ -5,11 +5,12 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:10.16.3'
-      - image: 'circleci/python:2.7'
+      - image: 'circleci/python:3.7-stretch'
     steps:
       - checkout
       - run: npm install      
       - run: npm run-script build
+      - run: pip install awscli
       - aws-s3/sync:
           from: build
           to: 's3://terraform-alex-shing'
