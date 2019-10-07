@@ -7,7 +7,7 @@ jobs:
       - image: 'circleci/node:10.16.3'
     working_directory: ~/../terra-app
     steps:
-      - checkout
+      # - checkout
       - run: npm install
       - run: npm run-script build
       - run:
@@ -24,7 +24,7 @@ jobs:
       - image: 'circleci/node:10.16.3'
     working_directory: ~/../terra-serverless
     steps:
-      - checkout
+      # - checkout
       - run:
           name: Install Serverless CLI and dependencies
           command: |
