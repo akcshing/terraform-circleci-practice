@@ -35,7 +35,9 @@ jobs:
           command: npm test
       - run:
           name: Deploy application
-          command: sls deploy --stage pre
+          command: |
+            sls login
+            sls deploy --stage pre
 
 workflows:
   version: 2
