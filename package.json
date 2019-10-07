@@ -20,7 +20,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "aws s3 sync build/ s3://terraform-alex-shing",
-    "test": "./node_modules/.bin/mocha **/test/*.spec.js",
+    "test": "./node_modules/.bin/mocha **/*.spec.js",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
