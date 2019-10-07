@@ -5,7 +5,7 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:10.16.3'
-    working_directory: '~/terra-app'
+    working_directory: ~/terra-app
     steps:
       - checkout
       - run: npm install
@@ -21,7 +21,7 @@ jobs:
   serverless:
     docker:
       - image: 'circleci/node:10.16.3'
-    working_directory: '~/terra-serverless'
+    working_directory: ~/terra-serverless
     steps:
       - checkout
       - run:
@@ -30,8 +30,8 @@ jobs:
             sudo npm i -g serverless
             npm install
       - run:
-          name: Run tests with coverage
-          command: npm test --coverage
+          name: Run tests
+          command: npm test
       - run:
           name: Deploy application
           command: sls deploy --stage pre
