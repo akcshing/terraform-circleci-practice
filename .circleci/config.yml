@@ -5,15 +5,11 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:10.16.3'
+    working_directory: ~/terra-app
     steps:
       - checkout
-      - run: npm install      
+      - run: npm install
       - run: npm run-script build
-#       - run:
-#           name: Install Serverless CLI and dependencies
-#           command: |
-#             sudo npm i -g serverless
-#             npm install
       - run:
           name: Install awscli
           command: |
@@ -22,3 +18,20 @@ jobs:
       - aws-s3/sync:
           from: build
           to: 's3://terraform-alex-shing'
+  serverless:
+    docker:
+      -image: 'circleci/node:10.16.3'
+    working_directory: ~/terra-serverless
+    steps:
+      - checkout
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            npm install
+      - run:
+          name: Run tests with coverage
+          command: npm test --coverage
+      - run:
+          name: Deploy application
+          command: sls deploy --stage pre
