@@ -5,7 +5,7 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:10.16.3'
-    working_directory: ~/terra-app
+    # working_directory: ~/terra-app
     steps:
       - checkout
       - run: npm install
@@ -22,7 +22,7 @@ jobs:
   serverless:
     docker:
       - image: 'circleci/node:10.16.3'
-    working_directory: ~/terra-serverless
+    working_directory: ~/handler
     steps:
       - checkout
       - run:
