@@ -1,0 +1,24 @@
+version: 2.1
+orbs:
+  aws-s3: circleci/aws-s3@1.0.0
+jobs:
+  build:
+    docker:
+      - image: 'circleci/node:10.16.3'
+    steps:
+      - checkout
+      - run: npm install      
+      - run: npm run-script build
+      - run:
+          name: Install Serverless CLI and dependencies
+          command: |
+            sudo npm i -g serverless
+            npm install
+      - run:
+          name: Install awscli
+          command: |
+            sudo apt install python-pip python-dev
+            sudo pip install awscli
+      - aws-s3/sync:
+          from: build
+          to: 's3://terraform-alex-shing'
