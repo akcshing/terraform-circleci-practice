@@ -45,7 +45,10 @@ jobs:
     docker:
       - image: circleci/node:10.16.3
     steps:
-      - checkout
+      - restore_cache:
+          key: source-{{ .Branch }}-{{ .Revision }}
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: 'npm build'
           command: npm run-script build
