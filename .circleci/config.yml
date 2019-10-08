@@ -14,10 +14,10 @@ jobs:
             npm install
             npm run-script build
       - run:
-          name: Install awscli
+          name: Install python-pip
           command: |
             sudo apt install python-pip python-dev
-            sudo pip install awscli
+            # sudo pip install awscli
       - aws-s3/sync:
           from: build
           to: 's3://terraform-alex-shing'
