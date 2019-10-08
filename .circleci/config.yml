@@ -3,6 +3,9 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.0
 jobs:
   checkout_code:
+    working_directory: ~/terra
+    docker:
+      - image: circleci/node:10.16.3
     steps:
       - restore_cache:
         keys:
