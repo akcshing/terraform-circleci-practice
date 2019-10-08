@@ -37,7 +37,7 @@ jobs:
           name: 'npm install'
           command: npm install
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "package-lock.json" }}
+          key: v1-dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
   build:
@@ -48,7 +48,7 @@ jobs:
       - restore_cache:
           key: v1-source-{{ .Branch }}-{{ .Revision }}
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "package-lock.json" }}
+          key: v1-dependency-cache-{{ checksum "package.json" }}
       - run:
           name: 'npm build'
           command: npm run-script build
