@@ -5,7 +5,6 @@ jobs:
   build:
     docker:
       - image: 'circleci/node:10.16.3'
-    # working_directory: ~/terra-app
     steps:
       - checkout
       - run:
@@ -15,9 +14,7 @@ jobs:
             npm run-script build
       - run:
           name: Install python-pip
-          command: |
-            sudo apt install python-pip python-dev
-            # sudo pip install awscli
+          command: sudo apt install python-pip python-dev
       - aws-s3/sync:
           from: build
           to: 's3://terraform-alex-shing'
