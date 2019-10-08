@@ -3,6 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.0
 jobs:
   build:
+    working_directory: ~/terra
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -12,7 +13,13 @@ jobs:
           command: |
             npm install
             npm run-script build
+      - persist_to_workspace:
+          root: ~/terra
+          paths:
+            - build
+            - package.json
   deploy:
+    working_directory: ~/terra
     docker:
       - image: circleci/python:3.7.4
     steps:
@@ -46,7 +53,7 @@ workflows:
   build_and_deploy:
     jobs:
       - build:
-          type: approval
+      # type: approval
       - deploy:
           requires:
             - build
