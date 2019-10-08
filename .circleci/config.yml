@@ -2,6 +2,41 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@1.0.0
 jobs:
+  checkout_code:
+    steps:
+      - restore_cache:
+        keys:
+          - source-{{ .Branch }}-{{ .Revision }}
+          - source-{{ .Branch }}-
+          - source-
+
+      - checkout
+
+      - save_cache:
+          key: source-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - '~/terra'
+
+      - save_cache:
+          key: cache_key_ssh
+          paths:
+            - '~/.ssh'
+  install:
+    working_directory: ~/terra
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - restore_cache:
+          key: source-{{ .Branch }}-{{ .Revision }}
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: 'npm install'
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
   build:
     working_directory: ~/terra
     docker:
@@ -9,10 +44,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install dependencies and build
-          command: |
-            npm install
-            npm run-script build
+          name: 'npm build'
+          command: npm run-script build
       - persist_to_workspace:
           root: ~/terra
           paths:
@@ -31,7 +64,13 @@ workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - build
+      - checkout_code
+      - install:
+          requires:
+            - checkout_code
+      - build:
+          requires:
+            - install
       - release:
           type: approval
           requires:
