@@ -8,10 +8,10 @@ jobs:
       - image: circleci/node:10.16.3
     steps:
       - restore_cache:
-        keys:
-          - source-{{ .Branch }}-{{ .Revision }}
-          - source-{{ .Branch }}-
-          - source-
+          keys:
+            - source-{{ .Branch }}-{{ .Revision }}
+            - source-{{ .Branch }}-
+            - source-
 
       - checkout
 
