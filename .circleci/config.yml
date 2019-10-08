@@ -23,13 +23,26 @@ jobs:
     docker:
       - image: circleci/python:3.7.4
     steps:
-      # - run:
-      #     name: Install python-pip
-      #     command: sudo apt install python-pip python-dev
       - aws-s3/sync:
           from: build
           to: s3://terraform-alex-shing
 
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - release:
+          type: approval
+          requires:
+            - build
+      - deploy:
+          requires:
+            - release
+          filters:
+            branches:
+              only:
+                - master
 #   serverless:
 #     docker:
 #       - image: 'circleci/node:10.16.3'
@@ -47,17 +60,3 @@ jobs:
 #       - run:
 #           name: Deploy application
 #           command: sls deploy --stage pre
-
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-      - build
-      # type: approval
-      - deploy:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
