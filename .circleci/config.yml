@@ -16,9 +16,9 @@ jobs:
     docker:
       - image: circleci/python:3.7.4
     steps:
-      - run:
-          name: Install python-pip
-          command: sudo apt install python-pip python-dev
+      # - run:
+      #     name: Install python-pip
+      #     command: sudo apt install python-pip python-dev
       - aws-s3/sync:
           from: build
           to: s3://terraform-alex-shing
