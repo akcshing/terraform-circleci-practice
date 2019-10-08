@@ -1,6 +1,6 @@
 version: 2.1
-orbs:
-  aws-s3: circleci/aws-s3@1.0.0
+# orbs:
+#   aws-s3: circleci/aws-s3@1.0.0
 jobs:
   build:
     docker:
@@ -8,8 +8,11 @@ jobs:
     # working_directory: ~/terra-app
     steps:
       - checkout
-      - run: npm install
-      - run: npm run-script build
+      - run:
+          name: Install dependencies and build
+          command: |
+            npm install
+            npm run-script build
       - run:
           name: Install awscli
           command: |
@@ -18,28 +21,27 @@ jobs:
       - aws-s3/sync:
           from: build
           to: 's3://terraform-alex-shing'
+#   serverless:
+#     docker:
+#       - image: 'circleci/node:10.16.3'
+#     # working_directory: ~/handler
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install Serverless CLI and dependencies
+#           command: |
+#             sudo npm i -g serverless
+#             npm install
+#       - run:
+#           name: Run tests
+#           command: npm test
+#       - run:
+#           name: Deploy application
+#           command: sls deploy --stage pre
 
-  serverless:
-    docker:
-      - image: 'circleci/node:10.16.3'
-    working_directory: ~/handler
-    steps:
-      - checkout
-      - run:
-          name: Install Serverless CLI and dependencies
-          command: |
-            sudo npm i -g serverless
-            npm install
-      - run:
-          name: Run tests
-          command: npm test
-      - run:
-          name: Deploy application
-          command: sls deploy --stage pre
-
-workflows:
-  version: 2
-  build_and_serverless:
-    jobs:
-      - build
-      - serverless
+# workflows:
+#   version: 2
+#   build_and_serverless:
+#     jobs:
+#       - build
+#       - serverless
