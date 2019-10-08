@@ -12,9 +12,10 @@ jobs:
           command: |
             npm install
             npm run-script build
-    deploy:
-      docker:
-        -image: circleci/python:3.7.4
+  deploy:
+    docker:
+      - image: circleci/python:3.7.4
+    steps:
       - run:
           name: Install python-pip
           command: sudo apt install python-pip python-dev
