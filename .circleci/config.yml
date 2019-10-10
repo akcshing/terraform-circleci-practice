@@ -50,7 +50,7 @@ jobs:
       #     key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: 'npm build'
-          command: npm run-script build
+          command: npx react-scripts build
       - persist_to_workspace:
           root: ~/terra
           paths:
