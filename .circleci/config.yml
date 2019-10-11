@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.0
 jobs:
   checkout_code:
-    working_directory: ~/terra
+    working_directory: ~/terra/terra-app
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -24,7 +24,7 @@ jobs:
       #     paths:
       #       - '~/.ssh'
   install:
-    working_directory: ~/terra
+    working_directory: ~/terra/terra-app
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -44,7 +44,7 @@ jobs:
       #     name: 'npm build'
       #     command: npx react-scripts build
   build:
-    working_directory: ~/terra
+    working_directory: ~/terra/terra-app
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -62,7 +62,7 @@ jobs:
             - build
             - package.json
   deploy:
-    working_directory: ~/terra
+    working_directory: ~/terra/terra-app
     docker:
       - image: circleci/python:3.7.4
     steps:
