@@ -39,7 +39,7 @@ jobs:
             cd terra-app
             npm ci
       - save_cache:
-          key: v2-dependency-cache-{{ checksum "package-lock.json" }}
+          key: v2-dependency-cache-{{ checksum "terra-app/package-lock.json" }}
           paths:
             - node_modules
       # - run:
@@ -57,7 +57,7 @@ jobs:
           name: 'cd into dir'
           command: cd terra-app
       - restore_cache:
-          key: v2-dependency-cache-{{ checksum "package-lock.json" }}
+          key: v2-dependency-cache-{{ checksum "terra-app/package-lock.json" }}
       - run:
           name: 'npm build'
           command: npx react-scripts build
