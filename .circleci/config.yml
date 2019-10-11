@@ -53,13 +53,14 @@ jobs:
       - checkout
       # - restore_cache:
       #     key: source-{{ .Branch }}-{{ .Revision }}
+      - run:
+          name: 'cd into dir'
+          command: cd terra-app
       - restore_cache:
           key: v2-dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: 'npm build'
-          command: |
-            cd terra-app
-            npx react-scripts build
+          command: npx react-scripts build
       - persist_to_workspace:
           root: ~/terra
           paths:
