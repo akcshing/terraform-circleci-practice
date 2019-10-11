@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@1.0.0
 jobs:
   checkout_code:
-    working_directory: ~/terra/terra-app
+    working_directory: ~/terra
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -24,7 +24,7 @@ jobs:
       #     paths:
       #       - '~/.ssh'
   install:
-    working_directory: ~/terra/terra-app
+    working_directory: ~/terra
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -35,7 +35,9 @@ jobs:
       #     key: v2-dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: 'npm install'
-          command: npm ci
+          command: |
+            cd terra-app
+            npm ci
       # - save_cache:
       #     key: v2-dependency-cache-{{ checksum "package-lock.json" }}
       #     paths:
@@ -44,7 +46,7 @@ jobs:
       #     name: 'npm build'
       #     command: npx react-scripts build
   build:
-    working_directory: ~/terra/terra-app
+    working_directory: ~/terra
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -55,17 +57,21 @@ jobs:
       #     key: v2-dependency-cache-{{ checksum "package-lock.json" }}
       - run:
           name: 'npm build'
-          command: npx react-scripts build
+          command: |
+            cd terra-app
+            npx react-scripts build
       - persist_to_workspace:
           root: ~/terra
           paths:
             - build
             - package.json
   deploy:
-    working_directory: ~/terra/terra-app
+    working_directory: ~/terra
     docker:
       - image: circleci/python:3.7.4
     steps:
+      - run:
+          command: cd terra-app
       - aws-s3/sync:
           from: build
           to: s3://terraform-alex-shing
